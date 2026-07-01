@@ -368,21 +368,27 @@ function showToast(msg){
 }
 
 async function loadQuestions(){
+  const INIT_FLAG = 'quiz-initialized';
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
     questions = raw ? JSON.parse(raw) : null;
   }catch(e){
     questions = null;
   }
-  if(!questions || !Array.isArray(questions) || questions.length === 0){
+  const alreadyInitialized = localStorage.getItem(INIT_FLAG) === '1';
+  if((!questions || !Array.isArray(questions)) && !alreadyInitialized){
     questions = seedQuestions();
+    localStorage.setItem(INIT_FLAG, '1');
     await saveQuestions();
+  } else if(!questions || !Array.isArray(questions)){
+    questions = [];
   }
 }
 
 async function saveQuestions(){
   try{
     localStorage.setItem(STORAGE_KEY, JSON.stringify(questions));
+    localStorage.setItem('quiz-initialized', '1');
   }catch(e){
     showToast("Erreur d'enregistrement (stockage plein ou bloqué)");
   }
@@ -432,7 +438,8 @@ function importBackup(file){
       renderStats();
       showToast(`${added} ajoutée(s), ${skipped} déjà présente(s)`);
     }catch(err){
-      showToast('Fichier invalide');
+      console.error('Import error:', err);
+      showToast('Fichier invalide : ' + err.message);
     }
   };
   reader.readAsText(file);
