@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Fiches de chantier — Révision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EDEAE7;
+    --bg-alt:#E2DED4;
+    --paper:#FAF8F4;
+    --ink:#1C2B3A;
+    --ink-soft:#5B6B78;
+    --accent:#E85D2C;
+    --accent-soft:#F6DECB;
+    --good:#3F7D5C;
+    --good-soft:#DCEAE0;
+    --bad:#C1442E;
+    --bad-soft:#F4DAD3;
+    --line:#C9C2B0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:28px 28px;
+    background-position:-1px -1px;
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    padding-bottom:78px;
+  }
+  h1,h2,h3{font-family:'Space Grotesk', sans-serif; margin:0;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  header{
+    padding:22px 18px 14px;
+    display:flex; align-items:baseline; justify-content:space-between;
+  }
+  header .brand{display:flex; flex-direction:column; gap:2px;}
+  header .brand .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent); font-weight:500;
+  }
+  header h1{font-size:22px; letter-spacing:-.01em;}
+  main{max-width:640px; margin:0 auto; padding:0 16px;}
+  .view{display:none;}
+  .view.active{display:block;}
+
+  /* ---- Nav ---- */
+  nav.tabs{
+    position:fixed; bottom:0; left:0; right:0;
+    background:var(--paper);
+    border-top:1px solid var(--line);
+    display:flex; justify-content:space-around;
+    padding:8px 6px 12px;
+    z-index:20;
+  }
+  nav.tabs button{
+    background:none; border:none; font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:.04em; color:var(--ink-soft);
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    padding:6px 10px; cursor:pointer; border-radius:8px;
+  }
+  nav.tabs button .dot{width:6px;height:6px;border-radius:50%;background:transparent;}
+  nav.tabs button.active{color:var(--ink); font-weight:600;}
+  nav.tabs button.active .dot{background:var(--accent);}
+
+  /* ---- Cards / chips ---- */
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0;}
+  .chip{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    padding:7px 13px; border-radius:999px; border:1px solid var(--line);
+    background:var(--paper); cursor:pointer; color:var(--ink-soft);
+  }
+  .chip.selected{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .chip .count{opacity:.6; margin-left:4px;}
+
+  .panel{
+    background:var(--paper); border:1px solid var(--line); border-radius:14px;
+    padding:18px; margin-bottom:16px; box-shadow:0 2px 0 rgba(28,43,58,.03);
+  }
+  .empty{
+    text-align:center; color:var(--ink-soft); padding:40px 20px;
+    font-family:'IBM Plex Mono', monospace; font-size:13px; line-height:1.6;
+  }
+
+  /* ---- Buttons ---- */
+  .btn{
+    font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:14.5px;
+    padding:12px 18px; border-radius:10px; border:1px solid var(--ink);
+    background:var(--ink); color:var(--paper); cursor:pointer;
+  }
+  .btn.secondary{background:var(--paper); color:var(--ink);}
+  .btn.accent{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .btn.block{width:100%;}
+  .btn:active{transform:translateY(1px);}
+  .btn:disabled{opacity:.4; cursor:not-allowed;}
+  .btn-row{display:flex; gap:10px; flex-wrap:wrap;}
+
+  /* ---- Forms ---- */
+  label{display:block; font-family:'IBM Plex Mono', monospace; font-size:11px;
+    text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); margin:14px 0 6px;}
+  label:first-child{margin-top:0;}
+  input[type=text], textarea, select{
+    width:100%; font-family:'IBM Plex Sans', sans-serif; font-size:15px;
+    padding:11px 12px; border-radius:8px; border:1px solid var(--line);
+    background:#fff; color:var(--ink);
+  }
+  textarea{resize:vertical; min-height:60px;}
+  .option-row{display:flex; gap:8px; align-items:center; margin-bottom:8px;}
+  .option-row input[type=text]{flex:1;}
+  .option-row input[type=radio]{width:18px; height:18px; accent-color:var(--good);}
+  .small-btn{
+    background:none; border:none; color:var(--bad); font-size:18px; cursor:pointer;
+    width:28px; height:28px; flex-shrink:0;
+  }
+  .type-toggle{display:flex; gap:8px;}
+  .type-toggle label.opt{
+    flex:1; border:1px solid var(--line); border-radius:8px; padding:10px;
+    text-align:center; cursor:pointer; margin:0; text-transform:none;
+    font-family:'IBM Plex Sans'; font-size:13.5px; color:var(--ink-soft);
+  }
+  .type-toggle input{display:none;}
+  .type-toggle input:checked + label.opt{background:var(--accent-soft); border-color:var(--accent); color:var(--ink); font-weight:600;}
+
+  /* ---- Flashcard (signature element) ---- */
+  .stage{padding-top:6px;}
+  .progress-line{
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .progress-bar{height:3px; background:var(--line); border-radius:2px; overflow:hidden; margin-bottom:20px;}
+  .progress-bar > div{height:100%; background:var(--accent); transition:width .25s ease;}
+
+  .card{
+    position:relative;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:4px 4px 16px 16px;
+    padding:30px 22px 24px;
+    min-height:220px;
+    box-shadow:0 8px 0 -3px var(--bg-alt), 0 1px 4px rgba(28,43,58,.08);
+  }
+  .card::before{
+    content:''; position:absolute; top:-9px; left:50%; transform:translateX(-50%);
+    width:18px; height:18px; border-radius:50%; background:var(--bg);
+    border:1px solid var(--line);
+  }
+  .card .theme-tag{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--accent); font-weight:500; margin-bottom:10px; display:block;
+  }
+  .card .qtext{font-family:'Space Grotesk', sans-serif; font-size:19px; line-height:1.4; font-weight:600;}
+  .card .atext{
+    margin-top:16px; padding-top:16px; border-top:1px dashed var(--line);
+    font-size:15.5px; line-height:1.55;
+  }
+  .card .explain{margin-top:8px; font-size:13.5px; color:var(--ink-soft); font-style:italic;}
+  .stamp{
+    position:absolute; top:18px; right:18px;
+    font-family:'IBM Plex Mono', monospace; font-weight:700; font-size:12px;
+    letter-spacing:.06em; text-transform:uppercase;
+    border:2px solid; border-radius:6px; padding:4px 10px;
+    transform:rotate(6deg);
+  }
+  .stamp.ok{color:var(--good); border-color:var(--good);}
+  .stamp.ko{color:var(--bad); border-color:var(--bad);}
+
+  .qcm-options{margin-top:16px; display:flex; flex-direction:column; gap:8px;}
+  .qcm-opt{
+    text-align:left; padding:11px 14px; border-radius:9px; border:1px solid var(--line);
+    background:#fff; font-size:14.5px; cursor:pointer; font-family:'IBM Plex Sans';
+  }
+  .qcm-opt.correct{background:var(--good-soft); border-color:var(--good); font-weight:600;}
+  .qcm-opt.wrong{background:var(--bad-soft); border-color:var(--bad);}
+  .qcm-opt:disabled{cursor:default;}
+
+  .grade-row{display:flex; gap:8px; margin-top:18px;}
+  .grade-row button{
+    flex:1; padding:12px 4px; border-radius:9px; border:1px solid var(--line);
+    font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:600; cursor:pointer;
+    background:#fff;
+  }
+  .grade-row button.fail{color:var(--bad); border-color:var(--bad);}
+  .grade-row button.hard{color:#a06a20; border-color:#a06a20;}
+  .grade-row button.good{color:var(--good); border-color:var(--good);}
+  .grade-row button.easy{color:#2c6e9e; border-color:#2c6e9e;}
+
+  .session-end{text-align:center; padding:30px 10px;}
+  .session-end h2{font-size:22px; margin-bottom:6px;}
+  .session-end p{color:var(--ink-soft); margin:4px 0 20px;}
+
+  /* ---- Manage list ---- */
+  .theme-group{margin-bottom:18px;}
+  .theme-group h3{
+    font-size:13px; font-family:'IBM Plex Mono', monospace; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--ink-soft); margin-bottom:8px;
+  }
+  .qitem{
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; margin-bottom:8px; display:flex; justify-content:space-between; gap:10px; align-items:flex-start;
+  }
+  .qitem .qi-text{font-size:14px; line-height:1.4;}
+  .qitem .qi-meta{font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--ink-soft); margin-top:4px;}
+  .qitem .qi-actions{display:flex; gap:6px; flex-shrink:0;}
+  .qi-actions button{background:none; border:none; font-size:16px; cursor:pointer; color:var(--ink-soft);}
+
+  /* ---- Stats ---- */
+  .stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;}
+  .stat-box{background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:16px;}
+  .stat-box .num{font-family:'Space Grotesk'; font-size:26px; font-weight:700;}
+  .stat-box .lbl{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--ink-soft); text-transform:uppercase; margin-top:2px;}
+
+  .toast{
+    position:fixed; bottom:90px; left:50%; transform:translateX(-50%);
+    background:var(--ink); color:var(--paper); padding:10px 18px; border-radius:999px;
+    font-size:13px; font-family:'IBM Plex Mono', monospace; opacity:0; pointer-events:none;
+    transition:opacity .2s ease, bottom .2s ease; z-index:50;
+  }
+  .toast.show{opacity:1; bottom:100px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="eyebrow">Chantier · Révision</span>
+    <h1>Fiches de révision</h1>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== RÉVISER ===== -->
+  <section id="view-revise" class="view active">
+    <div id="revise-setup">
+      <div class="panel">
+        <label style="margin-top:0;">Choisir un thème</label>
+        <div class="chip-row" id="theme-chips"></div>
+        <div class="btn-row" style="margin-top:6px;">
+          <button class="btn accent block" id="start-quiz-btn">Démarrer la révision</button>
+        </div>
+      </div>
+      <div class="stat-grid" id="mini-stats"></div>
+    </div>
+
+    <div id="revise-session" style="display:none;">
+      <div class="stage">
+        <div class="progress-line">
+          <span id="progress-label" class="mono">0 / 0</span>
+          <span id="progress-theme" class="mono"></span>
+        </div>
+        <div class="progress-bar"><div id="progress-fill" style="width:0%"></div></div>
+        <div class="card" id="card">
+          <span class="theme-tag" id="card-theme"></span>
+          <div class="qtext" id="card-question"></div>
+          <div id="card-body"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="revise-end" style="display:none;"></div>
+  </section>
+
+  <!-- ===== AJOUTER ===== -->
+  <section id="view-add" class="view">
+    <div class="panel">
+      <label style="margin-top:0;">Thème</label>
+      <input type="text" id="f-theme" list="theme-list" placeholder="ex. Procès-verbaux, SIA 118, Sécurité...">
+      <datalist id="theme-list"></datalist>
+
+      <label>Type de question</label>
+      <div class="type-toggle">
+        <input type="radio" name="f-type" id="t-qcm" value="qcm" checked>
+        <label class="opt" for="t-qcm">QCM</label>
+        <input type="radio" name="f-type" id="t-open" value="ouverte">
+        <label class="opt" for="t-open">Question ouverte</label>
+      </div>
+
+      <label>Question</label>
+      <textarea id="f-question" placeholder="Énoncé de la question"></textarea>
+
+      <div id="qcm-fields">
+        <label>Réponses (coche la bonne)</label>
+        <div id="options-list"></div>
+        <button class="btn secondary" id="add-option-btn" type="button" style="margin-top:4px; font-size:13px; padding:8px 14px;">+ Ajouter une réponse</button>
+      </div>
+
+      <div id="open-fields" style="display:none;">
+        <label>Réponse attendue</label>
+        <textarea id="f-answer" placeholder="La réponse correcte"></textarea>
+      </div>
+
+      <label>Explication <span style="text-transform:none; opacity:.6;">(optionnel)</span></label>
+      <textarea id="f-explain" placeholder="Détail, référence de norme, astuce mnémotechnique..."></textarea>
+
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="btn accent block" id="save-question-btn">Enregistrer la question</button>
+      </div>
+      <div id="edit-cancel-row" style="display:none; margin-top:8px;">
+        <button class="btn secondary block" id="cancel-edit-btn">Annuler la modification</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GÉRER ===== -->
+  <section id="view-manage" class="view">
+    <div id="manage-list"></div>
+  </section>
+
+  <!-- ===== STATS ===== -->
+  <section id="view-stats" class="view">
+    <div class="stat-grid" id="stats-grid"></div>
+    <div class="panel" id="stats-themes"></div>
+    <div class="panel">
+      <label style="margin-top:0;">Sauvegarde</label>
+      <p style="font-size:13px; color:var(--ink-soft); margin:0 0 12px;">Tes questions sont stockées uniquement dans ce navigateur. Exporte régulièrement une sauvegarde, surtout avant de changer d'appareil ou de vider le cache.</p>
+      <div class="btn-row">
+        <button class="btn secondary" id="export-btn">Exporter (.json)</button>
+        <button class="btn secondary" id="import-btn">Importer</button>
+      </div>
+      <input type="file" id="import-file" accept="application/json" style="display:none;">
+    </div>
+  </section>
+
+</main>
+
+<nav class="tabs">
+  <button data-view="revise" class="active"><span class="dot"></span>Réviser</button>
+  <button data-view="add"><span class="dot"></span>Ajouter</button>
+  <button data-view="manage"><span class="dot"></span>Gérer</button>
+  <button data-view="stats"><span class="dot"></span>Stats</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===================== STATE & STORAGE ===================== */
+const STORAGE_KEY = 'quiz-questions';
+let questions = [];
+let selectedTheme = '__ALL__';
+let editingId = null;
+let session = null; // {queue, index, theme}
+
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+const todayStr = () => new Date().toISOString().slice(0,10);
+const daysFromNow = n => { const d = new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); };
+
+const INTERVALS = [0,1,2,4,7,14,30,60,90]; // days, index = box level
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(showToast._h);
+  showToast._h = setTimeout(()=>t.classList.remove('show'), 1800);
+}
+
+async function loadQuestions(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    questions = raw ? JSON.parse(raw) : null;
+  }catch(e){
+    questions = null;
+  }
+  if(!questions || !Array.isArray(questions) || questions.length === 0){
+    questions = seedQuestions();
+    await saveQuestions();
+  }
+}
+
+async function saveQuestions(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(questions));
+  }catch(e){
+    showToast("Erreur d'enregistrement (stockage plein ou bloqué)");
+  }
+}
+
+function exportBackup(){
+  const blob = new Blob([JSON.stringify(questions, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'fiches-revision-' + todayStr() + '.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function importBackup(file){
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try{
+      const data = JSON.parse(e.target.result);
+      if(!Array.isArray(data)) throw new Error('format invalide');
+      questions = data;
+      await saveQuestions();
+      renderThemeList();
+      renderReviseSetup();
+      renderStats();
+      showToast('Sauvegarde importée');
+    }catch(err){
+      showToast('Fichier invalide');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function seedQuestions(){
+  const base = todayStr();
+  return [
+    {
+      id: uid(), theme: 'Procès-verbaux', type: 'ouverte',
+      question: "Quel est le rôle principal du procès-verbal de chantier ?",
+      answer: "Il fait foi des décisions prises en séance de chantier, des délais fixés et des responsabilités engagées ; il sert de référence juridique en cas de litige.",
+      explain: "En cas de silence d'un participant après réception, le PV est en général réputé accepté — vérifie le délai contractuel de contestation.",
+      box: 0, due: base
+    },
+    {
+      id: uid(), theme: 'SIA', type: 'qcm',
+      question: "La norme SIA 118 régit principalement :",
+      options: [
+        "Les conditions générales pour l'exécution des travaux de construction",
+        "Le calcul des honoraires d'architecte",
+        "Les normes de sécurité incendie",
+        "La gestion financière des entreprises"
+      ],
+      correctIndex: 0,
+      explain: "La SIA 118 encadre les rapports contractuels entre maître d'ouvrage et entrepreneur.",
+      box: 0, due: base
+    },
+    {
+      id: uid(), theme: 'Sécurité', type: 'ouverte',
+      question: "Qui est responsable de la coordination sécurité sur un chantier avec plusieurs entreprises ?",
+      answer: "Le maître d'ouvrage doit désigner un coordinateur sécurité (souvent le directeur des travaux ou un spécialiste externe) chargé de coordonner les mesures entre les différents intervenants.",
+      box: 0, due: base
+    }
+  ];
+}
+
+/* ===================== NAV ===================== */
+document.querySelectorAll('nav.tabs button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+btn.dataset.view).classList.add('active');
+    if(btn.dataset.view === 'manage') renderManage();
+    if(btn.dataset.view === 'stats') renderStats();
+    if(btn.dataset.view === 'add' && editingId === null) resetForm();
+    if(btn.dataset.view === 'revise') renderReviseSetup();
+  });
+});
+
+/* ===================== REVISE SETUP ===================== */
+function getThemes(){
+  return [...new Set(questions.map(q=>q.theme))].sort();
+}
+
+function isDue(q){ return q.due <= todayStr(); }
+
+function renderReviseSetup(){
+  document.getElementById('revise-setup').style.display = '';
+  document.getElementById('revise-session').style.display = 'none';
+  document.getElementById('revise-end').style.display = 'none';
+
+  const themes = getThemes();
+  const chipRow = document.getElementById('theme-chips');
+  chipRow.innerHTML = '';
+
+  const dueAll = questions.filter(isDue).length;
+  const allChip = document.createElement('button');
+  allChip.className = 'chip' + (selectedTheme === '__ALL__' ? ' selected' : '');
+  allChip.innerHTML = `Général <span class="count">${dueAll}/${questions.length}</span>`;
+  allChip.onclick = () => { selectedTheme = '__ALL__'; renderReviseSetup(); };
+  chipRow.appendChild(allChip);
+
+  themes.forEach(th=>{
+    const qs = questions.filter(q=>q.theme===th);
+    const due = qs.filter(isDue).length;
+    const chip = document.createElement('button');
+    chip.className = 'chip' + (selectedTheme === th ? ' selected' : '');
+    chip.innerHTML = `${th} <span class="count">${due}/${qs.length}</span>`;
+    chip.onclick = () => { selectedTheme = th; renderReviseSetup(); };
+    chipRow.appendChild(chip);
+  });
+
+  const startBtn = document.getElementById('start-quiz-btn');
+  startBtn.disabled = questions.length === 0;
+  startBtn.onclick = startSession;
+
+  // mini stats
+  const mastered = questions.filter(q=>q.box>=5).length;
+  document.getElementById('mini-stats').innerHTML = `
+    <div class="stat-box"><div class="num">${questions.length}</div><div class="lbl">Questions</div></div>
+    <div class="stat-box"><div class="num">${dueAll}</div><div class="lbl">À réviser aujourd'hui</div></div>
+  `;
+}
+
+/* ===================== SESSION ===================== */
+function startSession(){
+  let pool = selectedTheme === '__ALL__' ? questions.slice() : questions.filter(q=>q.theme===selectedTheme);
+  if(pool.length === 0){ showToast('Aucune question dans ce thème'); return; }
+
+  let due = pool.filter(isDue);
+  let usingFallback = false;
+  if(due.length === 0){
+    usingFallback = true;
+    due = pool.slice().sort((a,b)=> a.due < b.due ? -1 : 1);
+  }
+  // shuffle
+  due = due.map(q=>({q, r:Math.random()})).sort((a,b)=>a.r-b.r).map(x=>x.q);
+  due = due.slice(0, 20);
+
+  session = { queue: due, index: 0, theme: selectedTheme, total: due.length, correct:0, fallback: usingFallback };
+
+  document.getElementById('revise-setup').style.display = 'none';
+  document.getElementById('revise-session').style.display = '';
+  document.getElementById('revise-end').style.display = 'none';
+  renderCard();
+}
+
+function renderCard(){
+  const s = session;
+  if(s.index >= s.queue.length){ return endSession(); }
+  const q = s.queue[s.index];
+
+  document.getElementById('progress-label').textContent = `${s.index+1} / ${s.total}`;
+  document.getElementById('progress-theme').textContent = s.theme === '__ALL__' ? 'GÉNÉRAL' : s.theme.toUpperCase();
+  document.getElementById('progress-fill').style.width = Math.round((s.index/s.total)*100) + '%';
+
+  document.getElementById('card-theme').textContent = q.theme;
+  document.getElementById('card-question').textContent = q.question;
+
+  const body = document.getElementById('card-body');
+  document.querySelector('#card .stamp')?.remove();
+  body.innerHTML = '';
+
+  if(q.type === 'qcm'){
+    const wrap = document.createElement('div');
+    wrap.className = 'qcm-options';
+    q.options.forEach((opt, i)=>{
+      const b = document.createElement('button');
+      b.className = 'qcm-opt';
+      b.textContent = opt;
+      b.onclick = () => answerQcm(q, i, wrap);
+      wrap.appendChild(b);
+    });
+    body.appendChild(wrap);
+  } else {
+    const revealBtn = document.createElement('button');
+    revealBtn.className = 'btn secondary block';
+    revealBtn.style.marginTop = '16px';
+    revealBtn.textContent = 'Afficher la réponse';
+    revealBtn.onclick = () => revealOpen(q, body, revealBtn);
+    body.appendChild(revealBtn);
+  }
+}
+
+function answerQcm(q, chosenIndex, wrap){
+  const correct = chosenIndex === q.correctIndex;
+  [...wrap.children].forEach((btn, i)=>{
+    btn.disabled = true;
+    if(i === q.correctIndex) btn.classList.add('correct');
+    if(i === chosenIndex && !correct) btn.classList.add('wrong');
+  });
+  const card = document.getElementById('card');
+  const stamp = document.createElement('div');
+  stamp.className = 'stamp ' + (correct ? 'ok' : 'ko');
+  stamp.textContent = correct ? 'Juste' : 'Faux';
+  card.appendChild(stamp);
+
+  if(q.explain){
+    const ex = document.createElement('div');
+    ex.className = 'explain';
+    ex.style.marginTop = '12px';
+    ex.textContent = q.explain;
+    wrap.after(ex);
+  }
+
+  const cont = document.createElement('button');
+  cont.className = 'btn accent block';
+  cont.style.marginTop = '18px';
+  cont.textContent = 'Continuer';
+  cont.onclick = () => applyGrade(q, correct ? 2 : 0);
+  wrap.after(cont);
+}
+
+function revealOpen(q, body, revealBtn){
+  revealBtn.remove();
+  const atext = document.createElement('div');
+  atext.className = 'atext';
+  atext.textContent = q.answer;
+  body.appendChild(atext);
+  if(q.explain){
+    const ex = document.createElement('div');
+    ex.className = 'explain';
+    ex.textContent = q.explain;
+    body.appendChild(ex);
+  }
+  const grades = document.createElement('div');
+  grades.className = 'grade-row';
+  grades.innerHTML = `
+    <button class="fail" data-g="0">Faux</button>
+    <button class="hard" data-g="1">Difficile</button>
+    <button class="good" data-g="2">Correct</button>
+    <button class="easy" data-g="3">Facile</button>
+  `;
+  grades.querySelectorAll('button').forEach(b=>{
+    b.onclick = () => applyGrade(q, parseInt(b.dataset.g));
+  });
+  body.appendChild(grades);
+}
+
+function applyGrade(q, level){
+  // level: 0 fail, 1 hard, 2 good, 3 easy
+  const real = questions.find(x=>x.id===q.id);
+  if(level === 0){ real.box = 0; }
+  else if(level === 1){ real.box = Math.max(0, real.box); }
+  else if(level === 2){ real.box = Math.min(INTERVALS.length-1, real.box+1); }
+  else { real.box = Math.min(INTERVALS.length-1, real.box+2); }
+  real.due = daysFromNow(INTERVALS[real.box]);
+  real.lastReview = todayStr();
+  if(level >= 2) session.correct++;
+  saveQuestions();
+
+  session.index++;
+  renderCard();
+}
+
+function endSession(){
+  document.getElementById('revise-session').style.display = 'none';
+  const endEl = document.getElementById('revise-end');
+  endEl.style.display = '';
+  const pct = session.total ? Math.round((session.correct/session.total)*100) : 0;
+  endEl.innerHTML = `
+    <div class="panel session-end">
+      <h2>Session terminée</h2>
+      <p>${session.correct} / ${session.total} bonnes réponses (${pct}%)</p>
+      <div class="btn-row" style="justify-content:center;">
+        <button class="btn accent" id="again-btn">Refaire une série</button>
+        <button class="btn secondary" id="back-btn">Retour</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('again-btn').onclick = () => { renderReviseSetup(); };
+  document.getElementById('back-btn').onclick = () => { renderReviseSetup(); };
+}
+
+/* ===================== ADD / EDIT FORM ===================== */
+let optionCount = 0;
+
+function addOptionRow(text='', checked=false){
+  const list = document.getElementById('options-list');
+  const idx = optionCount++;
+  const row = document.createElement('div');
+  row.className = 'option-row';
+  row.dataset.idx = idx;
+  row.innerHTML = `
+    <input type="radio" name="correct-opt" ${checked?'checked':''} value="${idx}">
+    <input type="text" placeholder="Réponse ${list.children.length+1}" value="${escapeAttr(text)}">
+    <button type="button" class="small-btn" title="Supprimer">×</button>
+  `;
+  row.querySelector('.small-btn').onclick = () => { row.remove(); };
+  list.appendChild(row);
+}
+
+function escapeAttr(s){ return (s||'').replace(/"/g,'&quot;'); }
+
+function resetForm(){
+  editingId = null;
+  document.getElementById('f-theme').value = '';
+  document.getElementById('f-question').value = '';
+  document.getElementById('f-answer').value = '';
+  document.getElementById('f-explain').value = '';
+  document.getElementById('t-qcm').checked = true;
+  toggleTypeFields();
+  document.getElementById('options-list').innerHTML = '';
+  optionCount = 0;
+  addOptionRow(); addOptionRow();
+  document.getElementById('edit-cancel-row').style.display = 'none';
+  document.getElementById('save-question-btn').textContent = 'Enregistrer la question';
+}
+
+function toggleTypeFields(){
+  const isQcm = document.getElementById('t-qcm').checked;
+  document.getElementById('qcm-fields').style.display = isQcm ? '' : 'none';
+  document.getElementById('open-fields').style.display = isQcm ? 'none' : '';
+}
+document.getElementById('t-qcm').addEventListener('change', toggleTypeFields);
+document.getElementById('t-open').addEventListener('change', toggleTypeFields);
+document.getElementById('add-option-btn').addEventListener('click', ()=>addOptionRow());
+
+document.getElementById('save-question-btn').addEventListener('click', async ()=>{
+  const theme = document.getElementById('f-theme').value.trim();
+  const qtext = document.getElementById('f-question').value.trim();
+  const explain = document.getElementById('f-explain').value.trim();
+  const isQcm = document.getElementById('t-qcm').checked;
+
+  if(!theme || !qtext){ showToast('Thème et question requis'); return; }
+
+  let payload;
+  if(isQcm){
+    const rows = [...document.querySelectorAll('#options-list .option-row')];
+    const options = rows.map(r=>r.querySelector('input[type=text]').value.trim());
+    const checkedRow = document.querySelector('#options-list input[type=radio]:checked');
+    if(options.some(o=>!o) || options.length < 2){ showToast('Complète au moins 2 réponses'); return; }
+    if(!checkedRow){ showToast('Sélectionne la bonne réponse'); return; }
+    const correctIndex = rows.findIndex(r=>r.dataset.idx === checkedRow.value);
+    payload = { theme, type:'qcm', question:qtext, options, correctIndex, explain };
+  } else {
+    const answer = document.getElementById('f-answer').value.trim();
+    if(!answer){ showToast('La réponse est requise'); return; }
+    payload = { theme, type:'ouverte', question:qtext, answer, explain };
+  }
+
+  if(editingId){
+    const existing = questions.find(q=>q.id===editingId);
+    Object.assign(existing, payload);
+    showToast('Question modifiée');
+  } else {
+    payload.id = uid();
+    payload.box = 0;
+    payload.due = todayStr();
+    questions.push(payload);
+    showToast('Question ajoutée');
+  }
+  await saveQuestions();
+  resetForm();
+  renderThemeList();
+});
+
+document.getElementById('cancel-edit-btn').addEventListener('click', resetForm);
+
+function editQuestion(id){
+  const q = questions.find(x=>x.id===id);
+  if(!q) return;
+  editingId = id;
+  document.getElementById('f-theme').value = q.theme;
+  document.getElementById('f-question').value = q.question;
+  document.getElementById('f-explain').value = q.explain || '';
+  document.getElementById('options-list').innerHTML = '';
+  optionCount = 0;
+  if(q.type === 'qcm'){
+    document.getElementById('t-qcm').checked = true;
+    q.options.forEach((opt,i)=> addOptionRow(opt, i===q.correctIndex));
+  } else {
+    document.getElementById('t-open').checked = true;
+    document.getElementById('f-answer').value = q.answer;
+    addOptionRow(); addOptionRow();
+  }
+  toggleTypeFields();
+  document.getElementById('edit-cancel-row').style.display = '';
+  document.getElementById('save-question-btn').textContent = 'Mettre à jour';
+
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+  document.querySelector('nav.tabs button[data-view="add"]').classList.add('active');
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-add').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function renderThemeList(){
+  const dl = document.getElementById('theme-list');
+  dl.innerHTML = getThemes().map(t=>`<option value="${t}">`).join('');
+}
+
+/* ===================== MANAGE ===================== */
+function renderManage(){
+  const container = document.getElementById('manage-list');
+  if(questions.length === 0){
+    container.innerHTML = `<div class="empty">Aucune question pour l'instant.<br>Va dans "Ajouter" pour créer ta première fiche.</div>`;
+    return;
+  }
+  const themes = getThemes();
+  container.innerHTML = '';
+  themes.forEach(th=>{
+    const group = document.createElement('div');
+    group.className = 'theme-group';
+    const qs = questions.filter(q=>q.theme===th);
+    group.innerHTML = `<h3>${th} · ${qs.length}</h3>`;
+    qs.forEach(q=>{
+      const item = document.createElement('div');
+      item.className = 'qitem';
+      const boxLabel = q.box >= 5 ? 'maîtrisé' : `niveau ${q.box}`;
+      item.innerHTML = `
+        <div>
+          <div class="qi-text">${escapeHtml(q.question)}</div>
+          <div class="qi-meta">${q.type === 'qcm' ? 'QCM' : 'Ouverte'} · ${boxLabel} · prochaine: ${q.due}</div>
+        </div>
+        <div class="qi-actions">
+          <button title="Modifier" data-act="edit">✎</button>
+          <button title="Supprimer" data-act="del">🗑</button>
+        </div>
+      `;
+      item.querySelector('[data-act=edit]').onclick = () => editQuestion(q.id);
+      item.querySelector('[data-act=del]').onclick = async () => {
+        if(confirm('Supprimer cette question ?')){
+          questions = questions.filter(x=>x.id!==q.id);
+          await saveQuestions();
+          renderManage();
+        }
+      };
+      group.appendChild(item);
+    });
+    container.appendChild(group);
+  });
+}
+
+function escapeHtml(s){
+  return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ===================== STATS ===================== */
+function renderStats(){
+  const grid = document.getElementById('stats-grid');
+  const mastered = questions.filter(q=>q.box>=5).length;
+  const due = questions.filter(isDue).length;
+  grid.innerHTML = `
+    <div class="stat-box"><div class="num">${questions.length}</div><div class="lbl">Total questions</div></div>
+    <div class="stat-box"><div class="num">${getThemes().length}</div><div class="lbl">Thèmes</div></div>
+    <div class="stat-box"><div class="num">${due}</div><div class="lbl">À réviser aujourd'hui</div></div>
+    <div class="stat-box"><div class="num">${mastered}</div><div class="lbl">Maîtrisées</div></div>
+  `;
+  const themesEl = document.getElementById('stats-themes');
+  if(getThemes().length === 0){ themesEl.innerHTML = ''; return; }
+  themesEl.innerHTML = '<label style="margin-top:0;">Détail par thème</label>' + getThemes().map(th=>{
+    const qs = questions.filter(q=>q.theme===th);
+    const m = qs.filter(q=>q.box>=5).length;
+    return `<div class="qi-meta" style="margin-bottom:6px;">${th} — ${qs.length} question(s), ${m} maîtrisée(s)</div>`;
+  }).join('');
+}
+
+document.getElementById('export-btn').addEventListener('click', exportBackup);
+document.getElementById('import-btn').addEventListener('click', ()=>document.getElementById('import-file').click());
+document.getElementById('import-file').addEventListener('change', (e)=>{
+  if(e.target.files[0]) importBackup(e.target.files[0]);
+  e.target.value = '';
+});
+
+/* ===================== INIT ===================== */
+(async function init(){
+  await loadQuestions();
+  renderThemeList();
+  resetForm();
+  renderReviseSetup();
+})();
+</script>
+</body>
+</html>
