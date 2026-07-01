@@ -320,7 +320,7 @@
     <div class="panel" id="stats-themes"></div>
     <div class="panel">
       <label style="margin-top:0;">Sauvegarde</label>
-      <p style="font-size:13px; color:var(--ink-soft); margin:0 0 12px;">Tes questions sont stockées uniquement dans ce navigateur. Exporte régulièrement une sauvegarde, surtout avant de changer d'appareil ou de vider le cache.</p>
+      <p style="font-size:13px; color:var(--ink-soft); margin:0 0 12px;">Tes questions sont stockées uniquement dans ce navigateur. Exporte régulièrement une sauvegarde. Importer un fichier <b>ajoute</b> les nouvelles questions à celles déjà présentes (les doublons thème+question sont ignorés).</p>
       <div class="btn-row">
         <button class="btn secondary" id="export-btn">Exporter (.json)</button>
         <button class="btn secondary" id="import-btn">Importer</button>
@@ -406,12 +406,31 @@ function importBackup(file){
     try{
       const data = JSON.parse(e.target.result);
       if(!Array.isArray(data)) throw new Error('format invalide');
-      questions = data;
+      const existingKeys = new Set(questions.map(q => (q.theme+'|'+q.question).trim().toLowerCase()));
+      let added = 0, skipped = 0;
+      data.forEach(item => {
+        const key = ((item.theme||'')+'|'+(item.question||'')).trim().toLowerCase();
+        if(existingKeys.has(key)){ skipped++; return; }
+        existingKeys.add(key);
+        questions.push({
+          id: uid(),
+          theme: item.theme || 'Sans thème',
+          type: item.type === 'qcm' ? 'qcm' : 'ouverte',
+          question: item.question || '',
+          answer: item.answer || '',
+          options: item.options || undefined,
+          correctIndex: item.correctIndex,
+          explain: item.explain || '',
+          box: 0,
+          due: todayStr()
+        });
+        added++;
+      });
       await saveQuestions();
       renderThemeList();
       renderReviseSetup();
       renderStats();
-      showToast('Sauvegarde importée');
+      showToast(`${added} ajoutée(s), ${skipped} déjà présente(s)`);
     }catch(err){
       showToast('Fichier invalide');
     }
