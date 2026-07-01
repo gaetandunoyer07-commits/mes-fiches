@@ -327,6 +327,11 @@
       </div>
       <input type="file" id="import-file" accept="application/json" style="display:none;">
     </div>
+    <div class="panel">
+      <label style="margin-top:0;">Progression</label>
+      <p style="font-size:13px; color:var(--ink-soft); margin:0 0 12px;">Remet tous les niveaux de maîtrise à zéro et repasse toutes les questions "à réviser aujourd'hui". Tes questions restent intactes, seule la progression repart de zéro.</p>
+      <button class="btn secondary block" id="reset-progress-btn" style="border-color:var(--bad); color:var(--bad);">Réinitialiser la progression</button>
+    </div>
   </section>
 
 </main>
@@ -844,6 +849,14 @@ document.getElementById('import-btn').addEventListener('click', ()=>document.get
 document.getElementById('import-file').addEventListener('change', (e)=>{
   if(e.target.files[0]) importBackup(e.target.files[0]);
   e.target.value = '';
+});
+document.getElementById('reset-progress-btn').addEventListener('click', async ()=>{
+  if(!confirm('Remettre toutes les questions au niveau 0 ? Le contenu de tes questions ne sera pas touché.')) return;
+  questions.forEach(q => { q.box = 0; q.due = todayStr(); delete q.lastReview; });
+  await saveQuestions();
+  renderReviseSetup();
+  renderStats();
+  showToast('Progression réinitialisée');
 });
 
 /* ===================== INIT ===================== */
