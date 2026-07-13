@@ -196,6 +196,15 @@
   .session-end h2{font-size:22px; margin-bottom:6px;}
   .session-end p{color:var(--ink-soft); margin:4px 0 20px;}
 
+  /* ---- Paste import ---- */
+  .paste-item{
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; margin-bottom:8px; display:flex; flex-direction:column; align-items:flex-start; gap:4px;
+  }
+  .paste-item .qi-text{font-size:14px; line-height:1.4;}
+  .paste-item .qi-meta{font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--ink-soft); line-height:1.6;}
+  .paste-help{font-size:12.5px; color:var(--ink-soft); line-height:1.6; margin:0 0 12px; white-space:pre-line;}
+
   /* ---- Manage list ---- */
   .theme-group{margin-bottom:18px;}
   .theme-group h3{
@@ -268,6 +277,34 @@
     <div id="revise-end" style="display:none;"></div>
   </section>
 
+  <!-- ===== COLLER ===== -->
+  <section id="view-paste" class="view">
+    <div class="panel">
+      <p class="paste-help">Colle ton texte tel quel (depuis Word, un PDF, etc.). Format reconnu :
+
+<b>Thème:</b> Sécurité chantier
+
+<b>Q:</b> Qui est responsable de la coordination sécurité ?
+<b>R:</b> Le maître d'ouvrage désigne un coordinateur...
+<b>E:</b> Astuce ou référence de norme (optionnel)
+
+<b>Q:</b> La norme SIA 118 régit :
+A) Les conditions générales d'exécution *
+B) Le calcul des honoraires
+C) Les normes incendie
+
+Marque la bonne réponse d'un QCM avec un * en fin de ligne. Pas envie de mettre des préfixes ? Colle juste des paires question / réponse séparées par une ligne vide, ça marche aussi.</p>
+      <label style="margin-top:0;">Thème (optionnel — force le thème pour tout le texte collé)</label>
+      <input type="text" id="p-theme" list="theme-list" placeholder="Laisse vide pour utiliser 'Thème:' dans le texte">
+      <label>Texte à coller</label>
+      <textarea id="p-text" style="min-height:220px;" placeholder="Colle ton texte ici..."></textarea>
+      <div class="btn-row" style="margin-top:14px;">
+        <button class="btn accent block" id="parse-paste-btn">Analyser le texte</button>
+      </div>
+    </div>
+    <div id="paste-preview"></div>
+  </section>
+
   <!-- ===== AJOUTER ===== -->
   <section id="view-add" class="view">
     <div class="panel">
@@ -338,6 +375,7 @@
 
 <nav class="tabs">
   <button data-view="revise" class="active"><span class="dot"></span>Réviser</button>
+  <button data-view="paste"><span class="dot"></span>Coller</button>
   <button data-view="add"><span class="dot"></span>Ajouter</button>
   <button data-view="manage"><span class="dot"></span>Gérer</button>
   <button data-view="stats"><span class="dot"></span>Stats</button>
@@ -684,6 +722,189 @@ function endSession(){
   `;
   document.getElementById('again-btn').onclick = () => { renderReviseSetup(); };
   document.getElementById('back-btn').onclick = () => { renderReviseSetup(); };
+}
+
+/* ===================== PASTE IMPORT ===================== */
+function stripCorrectMarker(text){
+  let correct = false;
+  let t = text.trim();
+  const rules = [
+    /\(correct\)\s*$/i, /\[x\]\s*$/i, /[✓✔]\s*$/, /\*\s*$/, /^\*\s*/
+  ];
+  rules.forEach(re=>{
+    if(re.test(t)){ correct = true; t = t.replace(re,'').trim(); }
+  });
+  return { text: t, correct };
+}
+
+function parsePastedText(raw, themeOverride){
+  const themeRe = /^(?:th[eè]me|sujet)\s*[:\-]\s*(.+)$/i;
+  const qRe = /^(?:q|question|qst)\s*\.?\s*\d*\s*[:\-]\s*(.+)$/i;
+  const qNumRe = /^\d+[\.\)]\s+(.+)$/;
+  const ansRe = /^(?:r|rep|r[ée]ponse|correction|answer)\s*[:\-]\s*(.+)$/i;
+  const explainRe = /^(?:e|explication|astuce|note|remarque)\s*[:\-]\s*(.+)$/i;
+  const optRe = /^\*?\s*([a-hA-H])[\.\)]\s*(.+)$/;
+
+  let currentTheme = null;
+  let cur = null;
+  let lastField = null;
+  const results = [];
+
+  function pushCurrent(){
+    if(cur && cur.question.trim()) results.push(cur);
+    cur = null;
+    lastField = null;
+  }
+
+  const lines = raw.replace(/\r\n/g,'\n').split('\n');
+  for(const rawLine of lines){
+    const line = rawLine.trim();
+    if(line === '') continue;
+    let m;
+    if((m = themeRe.exec(line))){
+      currentTheme = m[1].trim();
+      continue;
+    }
+    if((m = qRe.exec(line)) || (m = qNumRe.exec(line))){
+      pushCurrent();
+      cur = { theme: themeOverride || currentTheme || 'Sans thème', question: m[1].trim(), type:'ouverte', options:[], answerLines:[], explainLines:[] };
+      lastField = 'question';
+      continue;
+    }
+    if(cur && (m = optRe.exec(line))){
+      const parsed = stripCorrectMarker(m[2]);
+      cur.type = 'qcm';
+      cur.options.push(parsed);
+      lastField = 'option';
+      continue;
+    }
+    if(cur && (m = ansRe.exec(line))){
+      cur.answerLines.push(m[1].trim());
+      lastField = 'answer';
+      continue;
+    }
+    if(cur && (m = explainRe.exec(line))){
+      cur.explainLines.push(m[1].trim());
+      lastField = 'explain';
+      continue;
+    }
+    if(cur){
+      if(lastField === 'question') cur.question += ' ' + line;
+      else if(lastField === 'option' && cur.options.length) cur.options[cur.options.length-1].text += ' ' + line;
+      else if(lastField === 'answer' && cur.answerLines.length) cur.answerLines[cur.answerLines.length-1] += ' ' + line;
+      else if(lastField === 'explain' && cur.explainLines.length) cur.explainLines[cur.explainLines.length-1] += ' ' + line;
+    }
+  }
+  pushCurrent();
+
+  let finalized = results.map(r=>{
+    const theme = r.theme;
+    const question = r.question.trim();
+    const explain = r.explainLines.join(' ').trim();
+    const warnings = [];
+    if(r.type === 'qcm' && r.options.length >= 2){
+      let correctIndex = r.options.findIndex(o=>o.correct);
+      if(correctIndex === -1){
+        const ansLetter = /^([a-hA-H])\b/.exec(r.answerLines.join(' ').trim());
+        if(ansLetter){
+          const idx = ansLetter[1].toUpperCase().charCodeAt(0) - 65;
+          if(idx >= 0 && idx < r.options.length) correctIndex = idx;
+        }
+      }
+      if(correctIndex === -1){
+        correctIndex = 0;
+        warnings.push('Bonne réponse non détectée — vérifie dans "Gérer" après import.');
+      }
+      return { theme, type:'qcm', question, options:r.options.map(o=>o.text), correctIndex, explain, warnings };
+    }
+    let answer = r.answerLines.join(' ').trim();
+    if(!answer && r.options.length === 1) answer = r.options[0].text;
+    if(!answer) warnings.push('Réponse manquante — complète-la dans "Gérer" après import.');
+    return { theme, type:'ouverte', question, answer, explain, warnings };
+  });
+
+  if(finalized.length === 0){
+    const blocks = raw.replace(/\r\n/g,'\n').split(/\n\s*\n+/).map(b=>b.trim()).filter(Boolean);
+    finalized = blocks.map(block=>{
+      const blines = block.split('\n').map(l=>l.trim()).filter(Boolean);
+      if(blines.length < 2) return null;
+      const question = blines[0];
+      const answer = blines.slice(1).join(' ').trim();
+      if(!answer) return null;
+      return { theme: themeOverride || 'Sans thème', type:'ouverte', question, answer, explain:'', warnings:[] };
+    }).filter(Boolean);
+  }
+
+  return finalized;
+}
+
+let pastedParsed = [];
+
+document.getElementById('parse-paste-btn').addEventListener('click', ()=>{
+  const text = document.getElementById('p-text').value;
+  const themeOverride = document.getElementById('p-theme').value.trim();
+  if(!text.trim()){ showToast('Colle du texte avant d\'analyser'); return; }
+  pastedParsed = parsePastedText(text, themeOverride);
+  renderPastePreview();
+});
+
+function renderPastePreview(){
+  const container = document.getElementById('paste-preview');
+  if(pastedParsed.length === 0){
+    container.innerHTML = `<div class="empty">Aucune question détectée. Vérifie le format (voir l'exemple ci-dessus).</div>`;
+    return;
+  }
+  const warnCount = pastedParsed.filter(p=>p.warnings.length).length;
+  let html = `<div class="panel">
+    <label style="margin-top:0;">Aperçu — ${pastedParsed.length} question(s) détectée(s)${warnCount ? `, ${warnCount} à vérifier` : ''}</label>`;
+  pastedParsed.forEach(p=>{
+    html += `<div class="paste-item">
+      <div class="qi-text"><b>${escapeHtml(p.theme)}</b> — ${escapeHtml(p.question)}</div>
+      <div class="qi-meta">${p.type === 'qcm' ? 'QCM' : 'Ouverte'}</div>`;
+    if(p.type === 'qcm'){
+      html += `<div class="qi-meta">${p.options.map((o,oi)=>(oi===p.correctIndex ? '✓ ' : '· ')+escapeHtml(o)).join('<br>')}</div>`;
+    } else {
+      html += `<div class="qi-meta">Réponse : ${escapeHtml(p.answer)}</div>`;
+    }
+    if(p.warnings.length){
+      html += `<div class="qi-meta" style="color:var(--bad);">⚠ ${p.warnings.map(escapeHtml).join(' ')}</div>`;
+    }
+    html += `</div>`;
+  });
+  html += `<div class="btn-row" style="margin-top:12px;">
+    <button class="btn accent" id="confirm-import-paste-btn">Importer ${pastedParsed.length} question(s)</button>
+    <button class="btn secondary" id="cancel-paste-btn">Annuler</button>
+  </div></div>`;
+  container.innerHTML = html;
+  document.getElementById('confirm-import-paste-btn').onclick = confirmPasteImport;
+  document.getElementById('cancel-paste-btn').onclick = ()=>{
+    pastedParsed = [];
+    container.innerHTML = '';
+  };
+}
+
+async function confirmPasteImport(){
+  const existingKeys = new Set(questions.map(q=>(q.theme+'|'+q.question).trim().toLowerCase()));
+  let added = 0, skipped = 0;
+  pastedParsed.forEach(p=>{
+    const key = (p.theme+'|'+p.question).trim().toLowerCase();
+    if(existingKeys.has(key)){ skipped++; return; }
+    existingKeys.add(key);
+    const q = { id: uid(), theme: p.theme, type: p.type, question: p.question, explain: p.explain || '', box: 0, due: todayStr() };
+    if(p.type === 'qcm'){ q.options = p.options; q.correctIndex = p.correctIndex; }
+    else { q.answer = p.answer; }
+    questions.push(q);
+    added++;
+  });
+  await saveQuestions();
+  renderThemeList();
+  renderReviseSetup();
+  renderStats();
+  showToast(`${added} question(s) importée(s)${skipped ? ', '+skipped+' déjà présente(s)' : ''}`);
+  pastedParsed = [];
+  document.getElementById('paste-preview').innerHTML = '';
+  document.getElementById('p-text').value = '';
+  document.getElementById('p-theme').value = '';
 }
 
 /* ===================== ADD / EDIT FORM ===================== */
