@@ -1,0 +1,1055 @@
+[
+  {
+    "id": "mr2isxt27ny82",
+    "theme": "Fondamentaux électriques",
+    "type": "qcm",
+    "question": "Un appareil de 230 V appelle un courant de 5 A. Quelle est sa résistance ?",
+    "answer": "",
+    "options": [
+      "1150 Ω",
+      "46 Ω",
+      "0,022 Ω",
+      "235 Ω"
+    ],
+    "correctIndex": 1,
+    "explain": "Piège classique : ne jamais multiplier U×I pour obtenir R. La résistance est un RAPPORT (R = U/I). Une forte puissance = faible résistance : vérifier l'ordre de grandeur.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt33nphi",
+    "theme": "Fondamentaux électriques",
+    "type": "qcm",
+    "question": "Quelle formule permet de calculer la puissance à partir de la résistance et du courant ?",
+    "answer": "",
+    "options": [
+      "P = U/I",
+      "P = R × I²",
+      "P = R/I",
+      "P = U²×R"
+    ],
+    "correctIndex": 1,
+    "explain": "Connaître les 3 formes de la puissance. P = R×I² est utile quand on a R et I mais pas U.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3nnndi",
+    "theme": "Fondamentaux électriques",
+    "type": "qcm",
+    "question": "Combien de joules vaut 1 kWh ?",
+    "answer": "",
+    "options": [
+      "3 600 J",
+      "60 000 J",
+      "3 600 000 J",
+      "1 000 J"
+    ],
+    "correctIndex": 2,
+    "explain": "Retenir 1 kWh = 3,6 MJ. La conversion secondes↔heures est la source d'erreur n°1 en calcul d'énergie.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3ga7xk",
+    "theme": "Fondamentaux électriques",
+    "type": "qcm",
+    "question": "En Suisse, quelles sont les tensions nominales du réseau domestique ?",
+    "answer": "",
+    "options": [
+      "110 V / 220 V",
+      "230 V mono / 400 V tri",
+      "120 V / 240 V",
+      "400 V mono / 690 V tri"
+    ],
+    "correctIndex": 1,
+    "explain": "Valeur de référence de tous les calculs. À ne pas confondre avec les standards nord-américains (120 V).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt377l9j",
+    "theme": "Fondamentaux électriques",
+    "type": "ouverte",
+    "question": "Un chauffe-eau de 2000 W fonctionne 2 h par jour pendant 30 jours. Calculez l'énergie consommée (kWh) et le coût à 0,25 CHF/kWh. Détaillez le calcul du temps séparément.",
+    "answer": "Temps : t = 2 h × 30 = 60 h. Énergie : E = P×t = 2000 × 60 / 1000 = 120 kWh. Coût : 120 × 0,25 = 30,00 CHF.",
+    "explain": "Toujours poser le calcul du temps À PART avant l'énergie. Ici 60 h, pas de conversion s↔h piégeuse car on reste en heures.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt37vuz1",
+    "theme": "Fondamentaux électriques",
+    "type": "ouverte",
+    "question": "Expliquez la différence entre kW DC et kVA AC dans une installation PV.",
+    "answer": "kW DC = puissance active côté continu (puissance-crête des modules, kWp/kWc). kVA AC = puissance apparente de l'onduleur côté alternatif. Le PDF précise que la puissance assignée du système s'indique en kW DC OU en kVA AC.",
+    "explain": "Distinction fréquente à l'examen. DC = modules (kWp), AC = onduleur (kVA). Ne pas mélanger puissance active (W) et apparente (VA).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3k0ajs",
+    "theme": "Fondamentaux électriques",
+    "type": "qcm",
+    "question": "Un moteur consomme 3 kW pendant 45 minutes. Quelle énergie en kWh ?",
+    "answer": "",
+    "options": [
+      "135 kWh",
+      "2,25 kWh",
+      "0,75 kWh",
+      "4 kWh"
+    ],
+    "correctIndex": 1,
+    "explain": "45 min = 0,75 h (et non 0,45 h). Convertir les minutes en heures par ÷60, jamais en décalant la virgule.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3umnjo",
+    "theme": "Fondamentaux électriques",
+    "type": "ouverte",
+    "question": "Pourquoi l'autoconsommation est-elle économiquement plus intéressante que la réinjection ? Chiffrez.",
+    "answer": "Acheter au réseau coûte ~20–30 ct./kWh ; revendre le surplus rapporte <10 ct./kWh (4–12 ct.). Chaque kWh autoconsommé évite 20–30 ct. alors qu'un kWh injecté ne rapporte que <10 ct. → autoconsommation ~2–3× plus rentable.",
+    "explain": "Raisonnement économique fondateur du dimensionnement batterie (Thème 6). Mémoriser les deux fourchettes.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt30ylh7",
+    "theme": "Technologie PV",
+    "type": "qcm",
+    "question": "Quel est le rendement typique d'une cellule monocristalline (Mono-Si) ?",
+    "answer": "",
+    "options": [
+      "6–9 %",
+      "16–19 %",
+      "20–24 %",
+      "30–35 %"
+    ],
+    "correctIndex": 2,
+    "explain": "Mono (20–24 %) > Poly (16–19 %). Le mono est le standard actuel ; le poly est en déclin.",
+    "box": 0,
+    "due": "2026-07-01",
+    "lastReview": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3osz16",
+    "theme": "Technologie PV",
+    "type": "qcm",
+    "question": "Quelle technologie de cellule est le successeur du PERC, de plus en plus industrialisé ?",
+    "answer": "",
+    "options": [
+      "Amorphe (a-Si)",
+      "CdTe",
+      "TOPCon",
+      "Polycristallin"
+    ],
+    "correctIndex": 2,
+    "explain": "Évolution du c-Si : PERC (20–22 %) → TOPCon (22–24 %) → HJT (21–25 %). Avenir = tandem pérovskite-silicium.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt36uqqk",
+    "theme": "Technologie PV",
+    "type": "qcm",
+    "question": "Quel onduleur offre le coût le plus bas par kW installé ?",
+    "answer": "",
+    "options": [
+      "Micro-onduleur",
+      "Onduleur string (chaîne)",
+      "Full optimizer",
+      "Onduleur hybride"
+    ],
+    "correctIndex": 1,
+    "explain": "Inconvénient du string : rendement limité par le module le plus faible (ombre/défaut) et flexibilité liée au nombre de MPPT.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3p7k98",
+    "theme": "Technologie PV",
+    "type": "qcm",
+    "question": "Quel type d'onduleur intègre directement un chargeur de batterie ?",
+    "answer": "",
+    "options": [
+      "Onduleur string simple",
+      "Micro-onduleur",
+      "Optimiseur partiel",
+      "Onduleur hybride"
+    ],
+    "correctIndex": 3,
+    "explain": "NE PAS confondre optimiseur (gère l'ombrage/orientation côté DC) et hybride (gère le stockage). Deux fonctions distinctes.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3kyo4b",
+    "theme": "Technologie PV",
+    "type": "ouverte",
+    "question": "Une toiture a deux pans (est et ouest) et 4 modules ombragés en fin de journée. Le client veut un coût maîtrisé. Que recommandez-vous et pourquoi ?",
+    "answer": "Onduleur string MULTI-MPPT (≥2 entrées pour gérer les 2 orientations) + optimiseurs PARTIELS sur les 4 modules ombragés (récupération ciblée des pertes, coût maîtrisé). Justification : multi-orientation → multi-MPPT ; ombrage localisé → optimiseurs partiels.",
+    "explain": "Réponse en triade : quoi + pourquoi (mécanisme) + lien contrainte client. Multi-orientation = multi-MPPT ; ombrage ciblé = optimiseurs partiels.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3mb1k2",
+    "theme": "Technologie PV",
+    "type": "qcm",
+    "question": "À quoi sert le MPPT d'un onduleur ?",
+    "answer": "",
+    "options": [
+      "À convertir le DC en AC",
+      "À suivre le point de puissance maximale d'une chaîne",
+      "À protéger contre la foudre",
+      "À mesurer l'énergie injectée"
+    ],
+    "correctIndex": 1,
+    "explain": "Le nombre d'entrées MPPT détermine le nombre d'orientations de toiture gérables sans perte.",
+    "box": 0,
+    "due": "2026-07-01",
+    "lastReview": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt32f4ic",
+    "theme": "Technologie PV",
+    "type": "ouverte",
+    "question": "Citez un avantage et un inconvénient majeurs du micro-onduleur.",
+    "answer": "Avantage : rendement optimisé panneau par panneau (idéal ombrages/orientations variées), sécurité (tension DC limitée, coupure rapide), monitoring par module. Inconvénient : coût élevé (1 par module) et maintenance/remplacement complexe en toiture (risque de litige garantie).",
+    "explain": "Le micro sécurise (basse tension DC) mais coûte cher et complique la maintenance sur toiture.",
+    "box": 1,
+    "due": "2026-07-02",
+    "lastReview": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt31nbkt",
+    "theme": "Technologie PV",
+    "type": "qcm",
+    "question": "Quelle technologie couche mince est flexible et adaptée aux façades/toitures légères ?",
+    "answer": "",
+    "options": [
+      "CIGS",
+      "Monocristallin",
+      "TOPCon",
+      "HJT"
+    ],
+    "correctIndex": 0,
+    "explain": "Couches minces = niche (façades, intégration, grandes centrales). Rendements plus faibles que le c-Si mais flexibilité.",
+    "box": 0,
+    "due": "2026-07-01",
+    "lastReview": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3a5u03",
+    "theme": "Le câble comme produit de construction (CPR)",
+    "type": "qcm",
+    "question": "Dans le classement CPR, quelle classe est la plus inflammable / sans caractéristique au feu définie ?",
+    "answer": "",
+    "options": [
+      "B1ca",
+      "Cca",
+      "Eca",
+      "Fca"
+    ],
+    "correctIndex": 3,
+    "explain": "Plus on descend l'alphabet (Aca→Fca), plus le câble est inflammable. Aca n'est pas appliquée aux câbles courants.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3t1ia8",
+    "theme": "Le câble comme produit de construction (CPR)",
+    "type": "qcm",
+    "question": "Que signifie l'attribut « s » dans la classification des câbles ?",
+    "answer": "",
+    "options": [
+      "Acidité",
+      "Dégagement de fumée (smoke)",
+      "Gouttelettes (drop)",
+      "Résistance structurelle"
+    ],
+    "correctIndex": 1,
+    "explain": "3 attributs : s = fumée (smoke), d = gouttelettes (drop), a = acidité (acidity).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3tork6",
+    "theme": "Le câble comme produit de construction (CPR)",
+    "type": "qcm",
+    "question": "Quels niveaux d'attributs sont considérés comme CRITIQUES par l'AEAI ?",
+    "answer": "",
+    "options": [
+      "s1, d0, a1",
+      "s2, d1, a2",
+      "s3, d2, a3",
+      "s3, d3, a3"
+    ],
+    "correctIndex": 2,
+    "explain": "Attention : pour l'égouttement c'est d2 qui est critique (pas 'd3' qui n'existe pas). Retenir : s3 / d2 / a3.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3xr65f",
+    "theme": "Le câble comme produit de construction (CPR)",
+    "type": "ouverte",
+    "question": "Quelle est la règle absolue concernant les câbles dans les voies d'évacuation et de secours ?",
+    "answer": "Il est INTERDIT d'installer des câbles présentant un comportement critique (s3, d2, a3, ainsi que Eca/Fca) dans les voies d'évacuation horizontales et verticales. Selon l'AEAI, les câbles B1ca, B2ca, Cca ou Dca sans caractéristiques critiques doivent toujours y être installés.",
+    "explain": "Règle de sécurité à mémoriser absolument. Pas de comportement critique dans les issues de secours.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3311cs",
+    "theme": "Le câble comme produit de construction (CPR)",
+    "type": "qcm",
+    "question": "Quelle classe de câble minimale est exigée pour un hôpital (niveau de sécurité élevé) dans les voies d'évacuation ?",
+    "answer": "",
+    "options": [
+      "Eca",
+      "Dca",
+      "Cca (s1, d1, a1)",
+      "Fca"
+    ],
+    "correctIndex": 2,
+    "explain": "Affectation : Cca = sécurité élevée (hôpitaux, écoles, hôtels, aéroports) ; Dca = moyen (industrie, grande hauteur) ; Eca = bas (maisons individuelles).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3t33h0",
+    "theme": "Le câble comme produit de construction (CPR)",
+    "type": "qcm",
+    "question": "À quelle combinaison correspond RF3 ?",
+    "answer": "",
+    "options": [
+      "Classe Dca",
+      "Classes B1ca/B2ca/Cca",
+      "Classe Aca",
+      "Classe Fca uniquement"
+    ],
+    "correctIndex": 0,
+    "explain": "RF2 = faible contribution (B/C) ; RF3 = contribution admissible (D). Eca toujours critique ; Fca = pas un matériau de construction.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3w7yhk",
+    "theme": "Le câble comme produit de construction (CPR)",
+    "type": "ouverte",
+    "question": "Pour une maison individuelle, hors voies d'évacuation, quelle classe minimale de câble est acceptable et pourquoi ?",
+    "answer": "min. Eca hors voies d'évacuation (niveau de sécurité bas). Types PVC et sans halogène : T-Draht PVC, TT PVC, etc. Justification : maison individuelle = risque le plus faible, exigence la moins sévère du barème.",
+    "explain": "Le niveau d'exigence suit le risque du bâtiment. Maison individuelle = Eca ; mais dans une voie d'évacuation même là, on remonte l'exigence.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3hy109",
+    "theme": "Le câble comme produit de construction (CPR)",
+    "type": "qcm",
+    "question": "Que signifie l'attribut « a3 » ?",
+    "answer": "",
+    "options": [
+      "Pas de gouttelettes",
+      "Émission de gaz fortement corrosif possible",
+      "Faible fumée",
+      "Câble céramique"
+    ],
+    "correctIndex": 1,
+    "explain": "a = acidité : a1 (légèrement corrosif) → a2 (moyennement) → a3 (fortement corrosif = critique). Les gaz corrosifs endommagent équipements et structures.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3xe95i",
+    "theme": "Normes & obligations",
+    "type": "qcm",
+    "question": "Quelle norme SIA traite des systèmes de stockage par batteries dans les bâtiments ?",
+    "answer": "",
+    "options": [
+      "SIA 2062",
+      "SIA 232/1",
+      "SIA 2061",
+      "SIA 271"
+    ],
+    "correctIndex": 2,
+    "explain": "2061 = stockage batteries (projet→réalisation→exploitation→recyclage). Ne pas confondre avec 2062 (PV dans l'enveloppe).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt38kigb",
+    "theme": "Normes & obligations",
+    "type": "ouverte",
+    "question": "Quelle est la différence entre BIPV et PV ajouté selon la SIA 2062 ?",
+    "answer": "BIPV (Building Integrated PV) = le module est un ÉLÉMENT CONSTRUCTIF de l'enveloppe (il remplace une fonction : couverture, étanchéité, façade). PV ajouté = le module est POSÉ SUR l'enveloppe existante (surimposition), sans fonction constructive. La SIA 2062 est parue en 2023.",
+    "explain": "Distinction centrale : BIPV = élément constructif (remplace la couverture) ; PV ajouté = surimposition. Impact sur choix constructifs et étanchéité.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3ic043",
+    "theme": "Normes & obligations",
+    "type": "qcm",
+    "question": "Quelle est la différence entre OIBT et NIBT ?",
+    "answer": "",
+    "options": [
+      "OIBT = norme technique, NIBT = ordonnance",
+      "OIBT = ordonnance (loi), NIBT = norme technique",
+      "Ce sont deux noms de la même norme",
+      "OIBT = protection incendie, NIBT = stockage"
+    ],
+    "correctIndex": 1,
+    "explain": "OIBT = Ordonnance (loi) ; NIBT = Norme (technique). L'OIBT fixe le régime des autorisations et des contrôles.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3jzedb",
+    "theme": "Normes & obligations",
+    "type": "qcm",
+    "question": "Quelle norme SIA couvre les toitures inclinées et leurs fixations PV ?",
+    "answer": "",
+    "options": [
+      "SIA 2061",
+      "SIA 232/1",
+      "SIA 2062",
+      "SIA 261"
+    ],
+    "correctIndex": 1,
+    "explain": "232/1 garantit que les ancrages PV respectent la fixation de la couverture et que les traversées restent étanches.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3pi0ci",
+    "theme": "Normes & obligations",
+    "type": "ouverte",
+    "question": "Selon l'OIBT, quel type de contrôle est obligatoire pour toute installation de production d'énergie (PV) ? Citez l'article.",
+    "answer": "Un contrôle de réception par un organe/organisme indépendant est obligatoire (art. 14 OIBT, exécution par un organisme d'inspection accrédité). Il vient EN PLUS du contrôle final de l'installateur (art. 7, 9 pour l'autorisation générale).",
+    "explain": "Point d'examen capital : PV = installation de production → contrôle de réception indépendant TOUJOURS obligatoire. Le contrôle final ne suffit pas.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3i7bky",
+    "theme": "Normes & obligations",
+    "type": "qcm",
+    "question": "Quelle norme concerne l'étanchéité (cohérence avec les traversées de câbles PV) ?",
+    "answer": "",
+    "options": [
+      "SIA 271",
+      "SIA 2061",
+      "SIA 2062",
+      "OIBT"
+    ],
+    "correctIndex": 0,
+    "explain": "Réflexe DT : traversée de câble = point d'étanchéité à contrôler (lien 232/1 ↔ 271).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3vojjj",
+    "theme": "Normes & obligations",
+    "type": "qcm",
+    "question": "Quel organisme/norme concerne la sécurité au travail (coordination fédérale) ?",
+    "answer": "",
+    "options": [
+      "Pronovo",
+      "CFST / EKAS 6503",
+      "SIA 261",
+      "AEAI"
+    ],
+    "correctIndex": 1,
+    "explain": "Sécurité chantier : SUVA (antichute toits), CFST/EKAS 6503 (coordination), Swissolar (concepts sécurité PV).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3bhjtb",
+    "theme": "Normes & obligations",
+    "type": "ouverte",
+    "question": "Quels thèmes la SIA 2062 aide-t-elle le directeur de travaux à évaluer ?",
+    "answer": "Différences BIPV / PV ajouté et leur impact sur les choix constructifs ; planification et sécurité (protection incendie AEAI, éblouissement) ; rentabilité et plus-value énergétique/immobilière (économies sur enveloppe, subventions, fiscalité, autonomie).",
+    "explain": "La 2062 couvre aussi l'éblouissement et la déconstruction/durée de vie, pas seulement la technique.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3lc7em",
+    "theme": "Sécurité & protection",
+    "type": "qcm",
+    "question": "Quelle mesure protège contre les contacts INDIRECTS ?",
+    "answer": "",
+    "options": [
+      "Isolations et coffrets fermés",
+      "Mise à la terre + différentiels (FI/DDR)",
+      "Étiquetage Solar-DC",
+      "Parafoudre type 2"
+    ],
+    "correctIndex": 1,
+    "explain": "Directs = toucher une partie normalement sous tension (isolation, coffrets). Indirects = toucher une masse mise sous tension accidentellement (terre + DDR).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt344wr1",
+    "theme": "Sécurité & protection",
+    "type": "qcm",
+    "question": "Quel SPD (parafoudre) est requis côté DC sur un bâtiment AVEC paratonnerre ?",
+    "answer": "",
+    "options": [
+      "Type 2 DC",
+      "Type 1 DC seul",
+      "Type 1+2 DC",
+      "Aucun"
+    ],
+    "correctIndex": 2,
+    "explain": "Paratonnerre → toujours type 1+2, côté DC ET côté AC. Sans paratonnerre → type 2 suffit.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt33emqz",
+    "theme": "Sécurité & protection",
+    "type": "ouverte",
+    "question": "Pourquoi le sectionneur DC est-il particulièrement critique dans une installation PV ?",
+    "answer": "Le champ de modules reste sous tension DC dès qu'il y a de la lumière, même onduleur coupé/éteint. On ne peut pas 'éteindre' les modules. Le sectionneur DC (obligatoire, avec sectionneur AC) permet la mise hors tension pour intervenir en sécurité, d'où aussi l'importance de la signalisation Solar-DC.",
+    "explain": "Spécificité PV : tension DC permanente à la lumière → risque même onduleur off. Sectionneurs DC et AC tous deux obligatoires.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3lw2o9",
+    "theme": "Sécurité & protection",
+    "type": "qcm",
+    "question": "Concernant les canalisations DC, quelles règles générales s'appliquent à TOUTES ?",
+    "answer": "",
+    "options": [
+      "Simple isolation, câbles PVC autorisés",
+      "Double isolation, pas de câbles PVC",
+      "Uniquement en apparent",
+      "PVC obligatoire"
+    ],
+    "correctIndex": 1,
+    "explain": "Règle transverse DC. Dans les voies d'évacuation verticales et zones explosibles : canalisation DC non admissible (sauf séparation EI30-RF1).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt35mi0a",
+    "theme": "Sécurité & protection",
+    "type": "ouverte",
+    "question": "Citez trois points de contrôle chantier CÔTÉ DC que le directeur de travaux doit vérifier.",
+    "answer": "1) Câbles fixés (pas de sections pendantes ou frottant sur tuiles/angles). 2) Câbles résistants UV, gainés si nécessaire ; pas de câble DC non isolé ni connecteur débranché exposé au soleil (risque d'arc). 3) Connecteurs compatibles — pas de mélange MC4/non-MC4.",
+    "explain": "Le mélange de connecteurs (MC4/non-MC4) est une cause majeure de défauts et d'incendies. Point de contrôle prioritaire.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt349w5n",
+    "theme": "Sécurité & protection",
+    "type": "qcm",
+    "question": "Quel dispositif protège les BIENS contre les surtensions ?",
+    "answer": "",
+    "options": [
+      "FI/DDR",
+      "SPD (parafoudre)",
+      "Sectionneur AC",
+      "Coffret isolant"
+    ],
+    "correctIndex": 1,
+    "explain": "Type 1 = foudre directe (paratonnerre) ; Type 2 = surtensions induites/manœuvre (standard) ; Type 1+2 = combiné.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt398f6j",
+    "theme": "Sécurité & protection",
+    "type": "qcm",
+    "question": "Sur le chantier, comment doivent cheminer les câbles AC par rapport aux câbles DC ?",
+    "answer": "",
+    "options": [
+      "Dans le même conduit",
+      "Passage AC séparé du DC",
+      "AC toujours au-dessus du DC",
+      "Peu importe"
+    ],
+    "correctIndex": 1,
+    "explain": "Séparation AC/DC + boîtes et canaux fermés et étiquetés (DC). Réduit risques d'interférence et d'erreur d'intervention.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3iityn",
+    "theme": "Sécurité & protection",
+    "type": "ouverte",
+    "question": "Quelle est la règle de mise à la terre à contrôler sur une installation PV en toiture ?",
+    "answer": "Mise à la terre correcte : les rails et cadres métalliques doivent être reliés (liaison équipotentielle), avec mise à la terre du générateur PV. Fait partie de la protection contre les contacts indirects et de la protection contre la surtension.",
+    "explain": "Liaison équipotentielle des parties métalliques (rails, cadres). Vérifier la continuité de la terre lors du contrôle chantier.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt342yc1",
+    "theme": "Réinjection, stockage & batterie",
+    "type": "qcm",
+    "question": "Quel compteur est obligatoire pour une installation PV raccordée au réseau ?",
+    "answer": "",
+    "options": [
+      "Compteur simple",
+      "Compteur bidirectionnel",
+      "Deux compteurs monodirectionnels séparés",
+      "Aucun compteur"
+    ],
+    "correctIndex": 1,
+    "explain": "Bidirectionnel = mesure les deux flux. Autoconsommation prioritaire, seul le surplus est injecté.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3kg1xi",
+    "theme": "Réinjection, stockage & batterie",
+    "type": "qcm",
+    "question": "Quel est l'ordre de grandeur du tarif de réinjection du surplus (via GRD) ?",
+    "answer": "",
+    "options": [
+      "4 à 12 ct./kWh",
+      "20 à 30 ct./kWh",
+      "50 ct./kWh",
+      "1 à 2 ct./kWh"
+    ],
+    "correctIndex": 0,
+    "explain": "Injection <10 ct. vs achat 20–30 ct. → autoconsommation ~2–3× plus rentable. Moteur du dimensionnement batterie.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3hh4m0",
+    "theme": "Réinjection, stockage & batterie",
+    "type": "ouverte",
+    "question": "Quelle est la différence entre une batterie couplée DC et une batterie couplée AC ?",
+    "answer": "DC : raccordée directement à l'onduleur hybride côté continu → moins de conversions → meilleur rendement, plus compacte, mais dépend d'un onduleur spécifique (ex. Kostal+ZYC, Fronius GEN24+BYD). AC : reliée après l'onduleur PV avec son propre onduleur → plus de conversions (DC→AC→DC→AC) → rendement un peu inférieur, mais compatible avec toute installation PV existante, plus flexible (ex. Tesla Powerwall, Sonnen).",
+    "explain": "Neuf + rendement → DC (hybride). Ajout sur existant → AC (flexible). Rappel : stockage AC installé par titulaire d'une autorisation générale (contrôle final + rapport de sécurité).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3oqbc1",
+    "theme": "Réinjection, stockage & batterie",
+    "type": "ouverte",
+    "question": "Consommation annuelle = 14 600 kWh, SANS pilotage (besoin soir/nuit = 80 %). Calculez le besoin nuit utile puis la capacité nominale de batterie (profondeur de décharge utile 0,80).",
+    "answer": "E_nuit,utile = (14600 / 365) × 0,80 = 40 × 0,80 = 32 kWh. C_nom = E_nuit,utile / 0,80 = 32 / 0,80 = 40 kWh.",
+    "explain": "Deux étapes : (1) besoin/jour × %soir-nuit ; (2) ÷ 0,80 (profondeur de décharge). Poser chaque étape séparément. Ici 14600/365 = 40 kWh/jour pile.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3qcq47",
+    "theme": "Réinjection, stockage & batterie",
+    "type": "qcm",
+    "question": "Que doit viser un bon dimensionnement d'installation PV pour maximiser la rentabilité ?",
+    "answer": "",
+    "options": [
+      "Surdimensionner fortement",
+      "Production annuelle ≈ consommation annuelle",
+      "Production = 3× la consommation",
+      "La plus petite installation possible"
+    ],
+    "correctIndex": 1,
+    "explain": "Surdimensionner sans raison augmente le surplus mal payé → baisse la rentabilité. Viser l'équilibre prod ≈ conso.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt36qm7m",
+    "theme": "Réinjection, stockage & batterie",
+    "type": "qcm",
+    "question": "Qu'obtient un producteur qui cède ses garanties d'origine (GO) au GRD ?",
+    "answer": "",
+    "options": [
+      "Un tarif d'injection légèrement supérieur",
+      "La gratuité du raccordement",
+      "Une exonération fiscale totale",
+      "Rien de plus"
+    ],
+    "correctIndex": 0,
+    "explain": "Deux modèles : réinjection simple (tarif injecté) ou avec GO cédée (tarif un peu supérieur).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3bn6j2",
+    "theme": "Réinjection, stockage & batterie",
+    "type": "ouverte",
+    "question": "Citez les trois objectifs du stockage par batteries.",
+    "answer": "1) Maximiser l'autoconsommation (utiliser le surplus solaire le soir/la nuit). 2) Sécuriser l'alimentation (back-up, bâtiments critiques). 3) Optimiser l'énergie (réduire les pics de charge, stabiliser le réseau).",
+    "explain": "Autoconsommation / secours / optimisation-réseau. Le stockage déplace l'énergie de la journée (production) vers le soir (consommation).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3wpvqi",
+    "theme": "Réinjection, stockage & batterie",
+    "type": "qcm",
+    "question": "Quel est le ratio de production annuel typique en Suisse (selon site/orientation) ?",
+    "answer": "",
+    "options": [
+      "~300–500 kWh/kWp/an",
+      "~900–1150 kWh/kWp/an",
+      "~2000–2500 kWh/kWp/an",
+      "~100 kWh/kWp/an"
+    ],
+    "correctIndex": 1,
+    "explain": "Ratio à mémoriser pour estimer rapidement la production annuelle : Production ≈ kWp × ~1000 kWh/kWp.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3a0gox",
+    "theme": "Contrôle des installations",
+    "type": "qcm",
+    "question": "Pour toute nouvelle installation, qui doit impérativement réaliser le contrôle final ?",
+    "answer": "",
+    "options": [
+      "Le propriétaire",
+      "Un installateur autorisé",
+      "Le GRD",
+      "La commune"
+    ],
+    "correctIndex": 1,
+    "explain": "Contrôle final = par l'installateur autorisé, systématique pour toute nouvelle installation/modification/extension.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt39yic0",
+    "theme": "Contrôle des installations",
+    "type": "ouverte",
+    "question": "Pourquoi une installation PV exige-t-elle TOUJOURS un contrôle de réception indépendant, en plus du contrôle final ?",
+    "answer": "Parce que le PV est une installation de PRODUCTION d'énergie (et à périodicité de contrôle < 20 ans). En plus du contrôle final de l'installateur, un contrôle de réception doit être établi par un organe de contrôle indépendant. Circuit : installateur → GRD informé → propriétaire mandate l'organe de contrôle indépendant → rapport de sécurité.",
+    "explain": "Point d'examen capital : le contrôle final NE SUFFIT PAS pour le PV. Réception indépendante obligatoire (production d'énergie).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3tfazd",
+    "theme": "Contrôle des installations",
+    "type": "qcm",
+    "question": "Qui déclenche le contrôle périodique d'une installation existante ?",
+    "answer": "",
+    "options": [
+      "L'installateur",
+      "Le GRD (par courrier au propriétaire)",
+      "La SUVA",
+      "Pronovo"
+    ],
+    "correctIndex": 1,
+    "explain": "Contrôle périodique : GRD → propriétaire → organe de contrôle. Si non conforme : réparations par l'installateur → nouveau contrôle → rapport.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt33o36w",
+    "theme": "Contrôle des installations",
+    "type": "qcm",
+    "question": "Qui installe les dispositifs de stockage à couplage CA (AC) ? > d'installer",
+    "answer": "",
+    "options": [
+      "N'importe quel bricoleur",
+      "Exclusivement un titulaire d'une autorisation générale",
+      "Le GRD uniquement",
+      "Le fabricant de batterie"
+    ],
+    "correctIndex": 1,
+    "explain": "Stockage AC : autorisation générale requise ; l'installateur fait lui-même contrôle final + rapport de sécurité.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3w3ikr",
+    "theme": "Contrôle des installations",
+    "type": "ouverte",
+    "question": "Distinguez « organe de contrôle indépendant » et « organisme d'inspection accrédité ».",
+    "answer": "Organe de contrôle indépendant : réalise le contrôle de réception 'courant' (exécution avec autorisation générale art. 7, 9). Organisme d'inspection accrédité : réalise le contrôle selon art. 14 OIBT (installations spéciales / de production). Sur le schéma PV, la partie DC relève de l'art. 14 (organisme accrédité).",
+    "explain": "Deux entités distinctes : indépendant (réception courante) vs accrédité (art. 14, production). Ne pas les confondre.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3qyxwo",
+    "theme": "Contrôle des installations",
+    "type": "qcm",
+    "question": "La directive SNG 482638 concerne : > travail)",
+    "answer": "",
+    "options": [
+      "Les installations électriques fixes",
+      "Les essais récurrents des appareils électriques (équipements de",
+      "Le raccordement au réseau",
+      "Les normes de toiture"
+    ],
+    "correctIndex": 1,
+    "explain": "SNG 482638 = appareils/équipements de travail : vérification après chaque réparation + contrôle périodique selon l'utilisation.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt319a7n",
+    "theme": "Contrôle des installations",
+    "type": "ouverte",
+    "question": "De quels deux critères dépend la périodicité d'essai d'un appareil selon la SNG 482638 ?",
+    "answer": "1) Le LIEU d'utilisation (Tableau A.1 : chantier gros œuvre = le plus sévère → bureau = le plus doux). 2) La FRÉQUENCE d'utilisation (quotidienne/hebdomadaire → mensuelle/rare). Plus l'environnement est agressif et l'usage intense, plus la périodicité est courte (jusqu'à 6 mois) ; environnement protégé + usage rare → jusqu'à 60 mois.",
+    "explain": "Périodicité = fonction de (lieu × fréquence). Chantier + quotidien → 6 mois ; bureau + rare → 60 mois.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3hk8li",
+    "theme": "Contrôle des installations",
+    "type": "qcm",
+    "question": "Quelle est la périodicité de contrôle de référence pour une installation d'habitat ordinaire ?",
+    "answer": "",
+    "options": [
+      "5 ans",
+      "10 ans",
+      "20 ans",
+      "1 an"
+    ],
+    "correctIndex": 2,
+    "explain": "20 ans = cas de base habitat. Les installations de production (PV) et locaux à risque ont une périodicité plus courte + réception indépendante.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3g7xsk",
+    "theme": "Systèmes de fixation & intégration",
+    "type": "ouverte",
+    "question": "Distinguez surimposition (PV ajouté) et intégration (BIPV) au niveau de l'étanchéité.",
+    "answer": "Surimposition : les modules sont posés au-dessus de la couverture existante, qui RESTE l'élément d'étanchéité. Intégration (BIPV) : les modules REMPLACENT la couverture et DEVIENNENT eux-mêmes l'élément d'étanchéité (élément constructif).",
+    "explain": "En surimposition la toiture assure l'étanchéité ; en BIPV c'est le module. Impact direct sur responsabilités et coûts (voir Thème 9).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3qz5n0",
+    "theme": "Systèmes de fixation & intégration",
+    "type": "qcm",
+    "question": "Sur une toiture en tuiles, sur quoi le crochet de fixation doit-il se fixer ?",
+    "answer": "",
+    "options": [
+      "Sur la tuile elle-même",
+      "Sur la charpente (chevron/liteau)",
+      "Sur la gouttière",
+      "Sur le faîtage uniquement"
+    ],
+    "correctIndex": 1,
+    "explain": "Cohérence SIA 232/1 (fixation de la couverture) et SIA 261 (charges vent/neige). La tuile n'est jamais un point porteur.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt350mur",
+    "theme": "Systèmes de fixation & intégration",
+    "type": "qcm",
+    "question": "Quel système de fixation s'utilise sur une tôle à joints debout, SANS perçage ?",
+    "answer": "",
+    "options": [
+      "Crochet terre cuite",
+      "Vis traversante",
+      "Pince sur joint debout",
+      "Bac lesté"
+    ],
+    "correctIndex": 2,
+    "explain": "Chaque support a sa fixation : tuiles = crochet ; trapèze = sommet d'onde ; joint debout = pince sans perçage (préserve l'étanchéité).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3gcnju",
+    "theme": "Systèmes de fixation & intégration",
+    "type": "ouverte",
+    "question": "Sur un toit plat avec système lesté (gravier), quels deux points le DT doit-il particulièrement vérifier ?",
+    "answer": "1) La CAPACITÉ PORTANTE de la toiture (surcharge admissible du lestage) — à valider avec la statique/l'ingénieur. 2) Les ESPACEMENTS entre rangées (min. 60/137/160 mm selon config) pour éviter l'ombrage inter-rangées et permettre l'écoulement. Inclinaison typique ~10–15°.",
+    "explain": "Toit plat lesté : surcharge (portance) + anti-ombrage inter-rangées. Pas de perçage de l'étanchéité (avantage du lestage).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3bdzww",
+    "theme": "Systèmes de fixation & intégration",
+    "type": "qcm",
+    "question": "Le système de montage 'EW' pour toit plat correspond à quelle disposition ?",
+    "answer": "",
+    "options": [
+      "Plein sud",
+      "Est-ouest (deux versants opposés)",
+      "Vertical en façade",
+      "À plat sans inclinaison"
+    ],
+    "correctIndex": 1,
+    "explain": "Configurations toit plat : SR (rangée simple), EW/GE-EW (est-ouest), GR-Sud (plein sud), ECO (économique).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt394pt4",
+    "theme": "Systèmes de fixation & intégration",
+    "type": "ouverte",
+    "question": "Citez les trois grandes catégories de systèmes intégrés (BIPV) avec un exemple chacune.",
+    "answer": "1) Intégration totale (modules remplaçant la couverture) : modules sans cadre (SwissSolarRoof, 3S, SwissPearl) ou avec système d'intégration étanche (Arres, Solrif). 2) Tuiles/ardoises photovoltaïques (Sunstyle, Panotron, ZZ, Nelskamp). 3) Modules PV avec bac d'intégration (Easy Roof, GSE).",
+    "explain": "3 familles BIPV : intégration totale / tuiles solaires / bac d'intégration. Tous assurent une fonction d'étanchéité.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3vwhha",
+    "theme": "Systèmes de fixation & intégration",
+    "type": "qcm",
+    "question": "Quelle zone est signalée comme critique (triangle d'alerte) lors de la pose sur toiture ?",
+    "answer": "",
+    "options": [
+      "Le faîtage",
+      "La traversée du câble DC à travers la toiture",
+      "La gouttière",
+      "Le pignon"
+    ],
+    "correctIndex": 1,
+    "explain": "Réflexe DT : toute traversée de toiture = risque d'infiltration. Contrôler l'étanchéité (lien SIA 271).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3v5ba3",
+    "theme": "Systèmes de fixation & intégration",
+    "type": "qcm",
+    "question": "Pour la maintenance d'une installation PV en toiture, que faut-il prévoir ?",
+    "answer": "",
+    "options": [
+      "Rien de particulier",
+      "Des systèmes de sécurité permanents (ancrages, lignes de vie)",
+      "Seulement une échelle",
+      "Une assurance uniquement"
+    ],
+    "correctIndex": 1,
+    "explain": "Sécurité permanente pour la maintenance future, pas seulement pendant la pose. Conformité SUVA.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3a3vw4",
+    "theme": "Devis, planning & coordination",
+    "type": "qcm",
+    "question": "À taille égale (10–30 kW), quelle solution est la plus chère au kWp ?",
+    "answer": "",
+    "options": [
+      "Surimposition sur tuiles (~1 950 CHF/kWp)",
+      "Intégration BIPV (~2 080 CHF/kWp)",
+      "Elles coûtent pareil",
+      "Toit plat lesté (~2 400 CHF/kWp est le moins cher)"
+    ],
+    "correctIndex": 1,
+    "explain": "Le BIPV coûte plus cher que la surimposition. Et le prix unitaire baisse avec la taille (effet d'échelle : toit plat 30–100 kW ~1 670 CHF/kWp).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3wlw1p",
+    "theme": "Devis, planning & coordination",
+    "type": "ouverte",
+    "question": "Citez au moins cinq des sept postes à vérifier dans un devis PV.",
+    "answer": "1) Modules (puissance, rendement, garanties matériel ET production). 2) Onduleur(s) (type, dimensionnement, rendement, garantie). 3) Structure de montage (adaptée à la toiture). 4) Câblage & protections (DC/AC, parafoudres, sectionnement, conformité NIBT/OIBT). 5) Travaux & raccordement (sécurité SUVA, pose, mise en service). 6) Démarches administratives (autorisations, subventions Pronovo/canton, dossier GRD). 7) Contrôles & réception (contrôle OIBT obligatoire, réception, plans, formation utilisateur).",
+    "explain": "7 postes couvrant toute la chaîne. Vérifier aussi : mentions 'ou équivalent', prestations NON incluses, garantie tuiles annulée par le PV.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3p05r0",
+    "theme": "Devis, planning & coordination",
+    "type": "qcm",
+    "question": "Quel organisme gère les subventions fédérales (rétribution unique) des installations PV ?",
+    "answer": "",
+    "options": [
+      "SUVA",
+      "Pronovo",
+      "AEAI",
+      "Swissolar"
+    ],
+    "correctIndex": 1,
+    "explain": "Pronovo = subventions/enregistrement. Deux étapes dans le planning : ouverture Pronovo puis soumission du dossier.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3xcpko",
+    "theme": "Devis, planning & coordination",
+    "type": "qcm",
+    "question": "Quelle est la durée moyenne d'un projet PV standard, de la signature à la clôture ?",
+    "answer": "",
+    "options": [
+      "1 semaine",
+      "~4 mois",
+      "~1 an",
+      "~2 ans"
+    ],
+    "correctIndex": 1,
+    "explain": "~4 mois en moyenne. Ce sont des indications variant selon projet, entreprise, commune.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3kg21m",
+    "theme": "Devis, planning & coordination",
+    "type": "ouverte",
+    "question": "Pourquoi la séance de chantier 'kick-off' et la définition des limites de mandat sont-elles cruciales pour le DT ?",
+    "answer": "Le kick-off réunit tous les intervenants (idéalement le client) pour coordonner les chaînes d'intervention (PV→ferblantier→couvreur ; PV→électricien→chauffagiste), clarifier qui fait les démarches administratives, et dimensionner un échafaudage commun compatible. Définir les limites de mandat évite les trous ou doublons de responsabilité et assure que chaque corps de métier enchaîne proprement. Rédiger les PV de séances protège juridiquement le DT.",
+    "explain": "Kick-off + limites de mandat = éviter les trous/doublons de responsabilité. PV des séances = traçabilité et protection en cas de litige.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3c50i1",
+    "theme": "Devis, planning & coordination",
+    "type": "qcm",
+    "question": "Quelle chaîne d'intervention est correcte pour la partie étanchéité/toiture ?",
+    "answer": "",
+    "options": [
+      "Installateur PV → Électricien → Chauffagiste",
+      "Installateur PV → Ferblantier → Couvreur",
+      "Couvreur → Client → Commune",
+      "Chauffagiste → Ferblantier → PV"
+    ],
+    "correctIndex": 1,
+    "explain": "Deux chaînes à mémoriser : toiture (PV→ferblantier→couvreur) et technique (PV→électricien→chauffagiste).",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3r46db",
+    "theme": "Devis, planning & coordination",
+    "type": "ouverte",
+    "question": "Quelles sont les trois vérifications-pièges à faire sur un devis PV ?",
+    "answer": "1) Contrôler les mentions 'ou équivalent' → demander quelles variantes sont possibles. 2) Contrôler les prestations NON incluses (remplacement de tuiles cassées, ferblanterie, lattage...). 3) Vérifier que le fabricant de tuiles n'annule pas ses garanties en cas de pose de PV.",
+    "explain": "Les 'trous' du devis coûtent cher : prestations exclues, 'ou équivalent' flou, garantie tuiles. À clarifier AVANT signature.",
+    "box": 0,
+    "due": "2026-07-01"
+  },
+  {
+    "id": "mr2isxt3kjxe5",
+    "theme": "Devis, planning & coordination",
+    "type": "qcm",
+    "question": "Concernant l'échafaudage sur un chantier PV multi-corps de métier, quelle est la bonne pratique ? > toiture",
+    "answer": "",
+    "options": [
+      "Un échafaudage par entreprise",
+      "Un échafaudage commun compatible, dimensionné pour l'accès",
+      "Pas d'échafaudage si moins de 3 m",
+      "L'échafaudage du couvreur uniquement"
+    ],
+    "correctIndex": 1,
+    "explain": "Coordonner UN échafaudage commun pour tous les corps de métier = économie + sécurité. À anticiper au kick-off.",
+    "box": 0,
+    "due": "2026-07-01"
+  }
+]
