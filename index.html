@@ -106,7 +106,7 @@
   label{display:block; font-family:'IBM Plex Mono', monospace; font-size:11px;
     text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); margin:14px 0 6px;}
   label:first-child{margin-top:0;}
-  input[type=text], textarea, select{
+  input[type=text], input[type=password], textarea, select{
     width:100%; font-family:'IBM Plex Sans', sans-serif; font-size:15px;
     padding:11px 12px; border-radius:8px; border:1px solid var(--line);
     background:#fff; color:var(--ink);
@@ -356,6 +356,24 @@ Marque la bonne réponse d'un QCM avec un * en fin de ligne. Pas envie de mettre
     <div class="stat-grid" id="stats-grid"></div>
     <div class="panel" id="stats-themes"></div>
     <div class="panel">
+      <label style="margin-top:0;">Synchronisation entre appareils</label>
+      <p style="font-size:13px; color:var(--ink-soft); margin:0 0 10px;">Connecte un jeton GitHub pour que tes questions et ta progression se synchronisent automatiquement sur tous tes appareils, sans exporter/importer manuellement.</p>
+      <div id="sync-status" class="mono" style="font-size:12.5px; color:var(--ink-soft); margin-bottom:10px;">○ Non connecté</div>
+      <div id="sync-connect-row">
+        <input type="password" id="gh-token-input" placeholder="Colle ton token GitHub ici" autocomplete="off">
+        <div class="btn-row" style="margin-top:10px;">
+          <button class="btn accent" id="gh-connect-btn">Connecter</button>
+        </div>
+        <p style="font-size:12px; color:var(--ink-soft); margin-top:10px; line-height:1.5;">Pour créer ton token : sur github.com → <b>Settings</b> → <b>Developer settings</b> → <b>Personal access tokens</b> → <b>Fine-grained tokens</b> → <b>Generate new token</b>. Sous "Repository access", choisis uniquement <b>mes-fiches</b>. Sous "Permissions" → <b>Repository permissions</b> → mets <b>Contents</b> sur <b>Read and write</b>. Colle le token généré ci-dessus.</p>
+      </div>
+      <div id="sync-connected-row" style="display:none;">
+        <div class="btn-row">
+          <button class="btn secondary" id="gh-sync-now-btn">Synchroniser maintenant</button>
+          <button class="btn secondary" id="gh-disconnect-btn" style="border-color:var(--bad); color:var(--bad);">Déconnecter</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
       <label style="margin-top:0;">Sauvegarde</label>
       <p style="font-size:13px; color:var(--ink-soft); margin:0 0 12px;">Tes questions sont stockées uniquement dans ce navigateur. Exporte régulièrement une sauvegarde. Importer un fichier <b>ajoute</b> les nouvelles questions à celles déjà présentes (les doublons thème+question sont ignorés).</p>
       <div class="btn-row">
@@ -423,7 +441,7 @@ async function loadQuestions(){
   }
 }
 
-async function saveQuestions(){
+async function saveQuestionsLocal(){
   try{
     localStorage.setItem(STORAGE_KEY, JSON.stringify(questions));
     localStorage.setItem('quiz-initialized', '1');
@@ -431,6 +449,132 @@ async function saveQuestions(){
     showToast("Erreur d'enregistrement (stockage plein ou bloqué)");
   }
 }
+
+async function saveQuestions(){
+  await saveQuestionsLocal();
+  schedulePush();
+}
+
+/* ===================== GITHUB SYNC ===================== */
+const GH_OWNER = 'gaetandunoyer07-commits';
+const GH_REPO = 'mes-fiches';
+const GH_FILE_PATH = 'data.json';
+const GH_TOKEN_KEY = 'gh-sync-token';
+const GH_SHA_KEY = 'gh-sync-sha';
+
+const getGhToken = () => localStorage.getItem(GH_TOKEN_KEY) || '';
+const setGhToken = (t) => { if(t) localStorage.setItem(GH_TOKEN_KEY, t); else localStorage.removeItem(GH_TOKEN_KEY); };
+
+function b64EncodeUtf8(str){ return btoa(unescape(encodeURIComponent(str))); }
+function b64DecodeUtf8(str){ return decodeURIComponent(escape(atob(str.replace(/\n/g,'')))); }
+
+async function ghApiFetch(options={}){
+  const token = getGhToken();
+  return fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE_PATH}`, {
+    ...options,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/vnd.github+json',
+      ...(options.headers || {})
+    }
+  });
+}
+
+async function syncPull(){
+  if(!getGhToken()) return false;
+  try{
+    const res = await ghApiFetch();
+    if(res.status === 404) return true; // pas encore de données distantes
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    localStorage.setItem(GH_SHA_KEY, data.sha);
+    const remote = JSON.parse(b64DecodeUtf8(data.content));
+    if(Array.isArray(remote)){
+      questions = remote;
+      await saveQuestionsLocal();
+    }
+    return true;
+  }catch(e){
+    console.error('Sync pull error', e);
+    return false;
+  }
+}
+
+async function syncPush(retry){
+  if(!getGhToken()) return false;
+  try{
+    const content = b64EncodeUtf8(JSON.stringify(questions, null, 2));
+    const sha = localStorage.getItem(GH_SHA_KEY) || undefined;
+    const res = await ghApiFetch({
+      method: 'PUT',
+      body: JSON.stringify({
+        message: 'Sync depuis l\'app — ' + new Date().toISOString(),
+        content,
+        sha
+      })
+    });
+    if(res.status === 409 && !retry){
+      await syncPull();
+      return syncPush(true);
+    }
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    localStorage.setItem(GH_SHA_KEY, data.content.sha);
+    return true;
+  }catch(e){
+    console.error('Sync push error', e);
+    showToast('Erreur de synchronisation');
+    return false;
+  }
+}
+
+let syncPushTimer = null;
+function schedulePush(){
+  if(!getGhToken()) return;
+  clearTimeout(syncPushTimer);
+  syncPushTimer = setTimeout(() => { syncPush(); }, 1500);
+}
+
+function renderSyncStatus(){
+  const connected = !!getGhToken();
+  document.getElementById('sync-status').textContent = connected ? '● Connecté — synchronisation active' : '○ Non connecté';
+  document.getElementById('sync-connect-row').style.display = connected ? 'none' : '';
+  document.getElementById('sync-connected-row').style.display = connected ? '' : 'none';
+}
+
+document.getElementById('gh-connect-btn').addEventListener('click', async () => {
+  const t = document.getElementById('gh-token-input').value.trim();
+  if(!t){ showToast('Colle un token'); return; }
+  setGhToken(t);
+  document.getElementById('gh-token-input').value = '';
+  showToast('Connexion en cours…');
+  const ok = await syncPull();
+  if(ok) await syncPush();
+  renderSyncStatus();
+  renderThemeList();
+  renderReviseSetup();
+  renderStats();
+  showToast(ok ? 'Synchronisé !' : 'Échec de connexion — vérifie le token');
+  if(!ok) setGhToken('');
+  renderSyncStatus();
+});
+
+document.getElementById('gh-sync-now-btn').addEventListener('click', async () => {
+  showToast('Synchronisation…');
+  const pulled = await syncPull();
+  const pushed = await syncPush();
+  renderThemeList();
+  renderReviseSetup();
+  renderStats();
+  showToast(pulled && pushed ? 'Synchronisé !' : 'Erreur de synchronisation');
+});
+
+document.getElementById('gh-disconnect-btn').addEventListener('click', () => {
+  setGhToken('');
+  localStorage.removeItem(GH_SHA_KEY);
+  renderSyncStatus();
+  showToast('Synchronisation désactivée');
+});
 
 function exportBackup(){
   const blob = new Blob([JSON.stringify(questions, null, 2)], {type:'application/json'});
@@ -1073,6 +1217,7 @@ function escapeHtml(s){
 
 /* ===================== STATS ===================== */
 function renderStats(){
+  renderSyncStatus();
   const grid = document.getElementById('stats-grid');
   const mastered = questions.filter(q=>q.box>=5).length;
   const due = questions.filter(isDue).length;
@@ -1109,9 +1254,11 @@ document.getElementById('reset-progress-btn').addEventListener('click', async ()
 /* ===================== INIT ===================== */
 (async function init(){
   await loadQuestions();
+  if(getGhToken()) await syncPull();
   renderThemeList();
   resetForm();
   renderReviseSetup();
+  renderSyncStatus();
 })();
 </script>
 </body>
